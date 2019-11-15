@@ -1,0 +1,2 @@
+INSERT INTO usuario (tipo, nome, telefone, cpf, email, dataNascimento, logradouro, numero, complemento, bairro, cidade, cep) VALUES
+	(0, '', 'Caique', '31999999999', '12345678912', 'caique@gmail.com', '2019-12-08', 'Rua Das Scanias', '69', 'Beco', 'Insdustrial', 'contagem', NULL);

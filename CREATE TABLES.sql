@@ -4,7 +4,7 @@ USE DEFESACIVILCONTAGEM;
 DROP TABLE IF EXISTS USUARIO;
 CREATE TABLE IF NOT EXISTS USUARIO (
   id int(5) NOT NULL AUTO_INCREMENT,
-  tipo varchar(255) NOT NULL,
+  tipo ENUM('cidadao', 'atendente', 'vistoriador','gestor') DEFAULT 'cidadao',
   nome varchar(255) NOT NULL,
   telefone varchar(14),
   cpf varchar(11) NOT NULL,
