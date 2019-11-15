@@ -4,7 +4,7 @@ USE DEFESACIVILCONTAGEM;
 DROP TABLE IF EXISTS USUARIO;
 CREATE TABLE IF NOT EXISTS USUARIO (
   id int(5) NOT NULL AUTO_INCREMENT,
-  tipo ENUM('cidadao', 'atendente', 'vistoriador','gestor') DEFAULT 'cidadao',
+  perfil ENUM('Cidadao', 'Atendente', 'Vistoriador', 'Gestor') DEFAULT 'Cidadao',
   nome varchar(255) NOT NULL,
   telefone varchar(14),
   cpf varchar(11) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS USUARIO (
   complemento varchar(255),
   bairro varchar(255),
   cidade varchar(255) DEFAULT 'Contagem',
-  cep varchar(8),
+  cep int(8) NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT UQ_cpf_email UNIQUE(cpf, email)
 );
@@ -24,9 +24,30 @@ CREATE TABLE IF NOT EXISTS AVISO (
   id int(5) NOT NULL AUTO_INCREMENT,
   idSequencia varchar(10) NOT NULL,
   status ENUM('Pendente', 'Processado', 'Cancelado') DEFAULT 'Pendente',
-  tipo varchar(255),
-  risco ENUM('Baixo', 'Médio', 'Grave', 'Gravíssimo'),
-  dataHora varchar(255) NOT NULL,
+  tipo ENUM(
+    'Risco Construtivo',
+    'Interdição',
+    'Escorregamento',
+    'Remoção',
+    'Abatimento',
+    'Solo',
+    'Solopamento',
+    'Drenagem',
+    'Erosão',
+    'Inundação',
+    'Alagamento',
+    'Desabamento',
+    'Terreno',
+    'impróprio',
+    'Outros/Sem dados'
+  ) DEFAULT 'Outros/Sem dados',
+  risco ENUM(
+    'Inexistente ou Baixo',
+    'Médio',
+    'Alto',
+    'Muito Alto'
+  ) DEFAULT 'Inexistente ou Baixo',
+  dataHora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   descricao varchar(255) NOT NULL,
   usuario_id int(5),
   logradouro varchar(255),
@@ -36,7 +57,9 @@ CREATE TABLE IF NOT EXISTS AVISO (
   longitude varchar(255),
   PRIMARY KEY (id),
   CONSTRAINT UQ_id_seq UNIQUE(idSequencia),
-  FOREIGN KEY (usuario_id) REFERENCES USUARIO (id) ON DELETE SET NULL
+  CONSTRAINT fk_usuario_id FOREIGN KEY (usuario_id) REFERENCES USUARIO (id) ON DELETE
+  SET
+    NULL
 );
 DROP TABLE IF EXISTS IMAGENS;
 CREATE TABLE IF NOT EXISTS IMAGENS (
@@ -59,6 +82,7 @@ CREATE TABLE IF NOT EXISTS OCORRENCIA (
     'Em Espera',
     'Cancelado'
   ) DEFAULT 'Pendente',
+  dataHora TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   numeroDiscriminacao VARCHAR(255) NOT NULL,
   dataVistoria VARCHAR(255) NOT NULL,
   pessoasEnvolvidas INT NOT NULL,
@@ -76,7 +100,6 @@ CREATE TABLE IF NOT EXISTS OCORRENCIA (
   dataRequisicao VARCHAR(255) NOT NULL,
   PRIMARY KEY(id),
   CONSTRAINT UQ_id_seq UNIQUE(idSequencia),
-  FOREIGN KEY (aviso_id) REFERENCES AVISO(id),
   FOREIGN KEY (aviso_id) REFERENCES AVISO(id)
 );
 DROP TABLE IF EXISTS VISTORIADOR;
@@ -114,6 +137,6 @@ CREATE TABLE IF NOT EXISTS ALERTA (
   id int(5) NOT NULL AUTO_INCREMENT,
   descricao varchar(255) NOT NULL,
   texto VARCHAR(255) NOT NULL,
-  dataHora varchar(255) NOT NULL,
+  dataHora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
 );
