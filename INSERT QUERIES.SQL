@@ -8,9 +8,9 @@ INSERT INTO usuario (perfil, nome, telefone, cpf, email, dataNascimento, logrado
 	('Gestor', 'Samuel Silva', '31999234929', '12245328910', 'sam.silva@gmail.com', '1984-12-08', 'Rua Paraíba', '17', 'Apto 12', 'Inconfidentes', 32515072);
 
 -- Inserção Aviso Teste 1
-INSERT INTO aviso (idSequencia, tipo, descricao, usuario_id)
-VALUES ('0001/2019', 'Inundação', 'Inundação devido a chuva', 1);
+INSERT INTO aviso (idSequencia, tipo, descricao, usuario_id, logradouro, bairro)
+VALUES ('0001/2019', 'Inundação', 'Inundação devido a chuva', 1, 'Rua Scania', 'Industrial');
 
 -- Inserção Aviso Teste 2
-INSERT INTO aviso (idSequencia, tipo, descricao, usuario_id)
-VALUES ('0002/2019', 'Risco construtivo', 'Estrutura de prédio com rachaduras', 2);
+INSERT INTO aviso (idSequencia, tipo, descricao, usuario_id, logradouro, bairro)
+VALUES ('0002/2019', 'Risco construtivo', 'Estrutura de prédio com rachaduras', 2, 'Rua das Flores', 'Centro');
