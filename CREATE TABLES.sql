@@ -1,76 +1,119 @@
-CREATE TABLE USUARIO (
-  id INT,
-  tipo VARCHAR(255) NOT NULL,
-  nome VARCHAR(255),
-  telefone VARCHAR(14),
-  cpf VARCHAR(11) NOT NULL,
-  email VARCHAR(100) NOT NULL,
-  dataNascimento DATE,
-  logradouro VARCHAR(255),
-  numero VARCHAR(10),
-  complemento VARCHAR(255),
-  bairro VARCHAR(255),
-  cidade VARCHAR(255),
-  cep VARCHAR(8),
-  PRIMARY KEY(id)
+DROP DATABASE IF EXISTS DEFESACIVILCONTAGEM;
+CREATE DATABASE IF NOT EXISTS DEFESACIVILCONTAGEM;
+USE DEFESACIVILCONTAGEM;
+DROP TABLE IF EXISTS USUARIO;
+CREATE TABLE IF NOT EXISTS USUARIO (
+  id int(5) NOT NULL AUTO_INCREMENT,
+  tipo varchar(255) NOT NULL,
+  nome varchar(255) NOT NULL,
+  telefone varchar(14),
+  cpf varchar(11) NOT NULL,
+  email varchar(100) NOT NULL,
+  dataNascimento date,
+  logradouro varchar(255),
+  numero varchar(10),
+  complemento varchar(255),
+  bairro varchar(255),
+  cidade varchar(255) DEFAULT 'Contagem',
+  cep varchar(8),
+  PRIMARY KEY (id),
+  CONSTRAINT UQ_cpf_email UNIQUE(cpf, email)
 );
-CREATE TABLE AVISO (
-  id INT,
-  idSequencia VARCHAR(10) NOT NULL,
-  status VARCHAR(255),
-  tipo VARCHAR(255),
-  gravidade VARCHAR(255),
-  dataHora VARCHAR(255),
-  descricao VARCHAR(10),
-  usuario_id INT,
-  logradouro VARCHAR(255),
-  numero VARCHAR(10),
-  bairro VARCHAR(255),
-  latitude VARCHAR(255),
-  longitude VARCHAR(255),
-  PRIMARY KEY(id),
-  FOREIGN KEY(usuario_id) REFERENCES USUARIO(id)
+DROP TABLE IF EXISTS AVISO;
+CREATE TABLE IF NOT EXISTS AVISO (
+  id int(5) NOT NULL AUTO_INCREMENT,
+  idSequencia varchar(10) NOT NULL,
+  status ENUM('Pendente', 'Processado', 'Cancelado') DEFAULT 'Pendente',
+  tipo varchar(255),
+  risco ENUM('Baixo', 'Médio', 'Grave', 'Gravíssimo'),
+  dataHora varchar(255) NOT NULL,
+  descricao varchar(255) NOT NULL,
+  usuario_id int(5),
+  logradouro varchar(255),
+  numero varchar(10),
+  bairro varchar(255),
+  latitude varchar(255),
+  longitude varchar(255),
+  PRIMARY KEY (id),
+  CONSTRAINT UQ_id_seq UNIQUE(idSequencia),
+  FOREIGN KEY (usuario_id) REFERENCES USUARIO (id) ON DELETE SET NULL
 );
-CREATE TABLE IMAGENS (
-  id INT NOT NULL,
+DROP TABLE IF EXISTS IMAGENS;
+CREATE TABLE IF NOT EXISTS IMAGENS (
+  id int(5) NOT NULL AUTO_INCREMENT,
   aviso_id INT NOT NULL,
   url VARCHAR(255) NOT NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY (aviso_id) REFERENCES USUARIO(id)
+  CONSTRAINT UQ_url UNIQUE(url),
+  CONSTRAINT fk_aviso_id FOREIGN KEY (aviso_id) REFERENCES AVISO(id) ON DELETE CASCADE
 );
-CREATE TABLE OCORRENCIA (
-  id INT,
+DROP TABLE IF EXISTS OCORRENCIA;
+CREATE TABLE IF NOT EXISTS OCORRENCIA (
+  id int(5) NOT NULL AUTO_INCREMENT,
   idSequencia VARCHAR(10) NOT NULL,
-  usuario_id INT NOT NULL,
   aviso_id INT NOT NULL,
-  status VARCHAR(255),
-  numeroDiscriminacao VARCHAR(255),
-  dataVistoria VARCHAR(255),
-  pessoasEnvolvidas INT,
-  equipeVistoria VARCHAR(255),
+  status ENUM(
+    'Pendente',
+    'Em aberto',
+    'Concluído',
+    'Em Espera',
+    'Cancelado'
+  ) DEFAULT 'Pendente',
+  numeroDiscriminacao VARCHAR(255) NOT NULL,
+  dataVistoria VARCHAR(255) NOT NULL,
+  pessoasEnvolvidas INT NOT NULL,
+  equipeVistoria VARCHAR(255) NOT NULL,
   ROsAnteriores VARCHAR(255),
   numeroOficioEncaminhado VARCHAR(255),
   orgaoDestinoOficio VARCHAR(255),
   doacao VARCHAR(255),
-  vitimaParcial VARCHAR(255),
-  vitimaFatal VARCHAR(255),
-  interdicao VARCHAR(255),
-  dataMonitoramento VARCHAR(255),
-  situacaoAtual VARCHAR(255),
-  retornoVistoria VARCHAR(255),
-  dataRequisicao VARCHAR(255),
+  vitimaParcial VARCHAR(255) NOT NULL,
+  vitimaFatal VARCHAR(255) NOT NULL,
+  interdicao VARCHAR(255) NOT NULL,
+  dataMonitoramento VARCHAR(255) NOT NULL,
+  situacaoAtual VARCHAR(255) NOT NULL,
+  retornoVistoria VARCHAR(255) NOT NULL,
+  dataRequisicao VARCHAR(255) NOT NULL,
   PRIMARY KEY(id),
-  FOREIGN KEY (usuario_id) REFERENCES USUARIO(id),
+  CONSTRAINT UQ_id_seq UNIQUE(idSequencia),
+  FOREIGN KEY (aviso_id) REFERENCES AVISO(id),
   FOREIGN KEY (aviso_id) REFERENCES AVISO(id)
 );
-CREATE TABLE VISTORIADOR(
-  id INT,
-  nome VARCHAR(250),
-  email VARCHAR(100),
-  PRIMARY KEY (id)
+DROP TABLE IF EXISTS VISTORIADOR;
+CREATE TABLE IF NOT EXISTS VISTORIADOR (
+  id int(5) NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(250) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT UQ_vistoriador UNIQUE(nome, email)
 );
-CREATE TABLE PERMISSOES (
-  id INT,
-  permissao VARCHAR(255),
+DROP TABLE IF EXISTS ATENDIMENTO;
+CREATE TABLE IF NOT EXISTS ATENDIMENTO (
+  id int(5) NOT NULL AUTO_INCREMENT,
+  ocorrencia_id int(5) NOT NULL,
+  vistoriador_id int(5) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (ocorrencia_id) REFERENCES OCORRENCIA(id),
+  FOREIGN KEY (vistoriador_id) REFERENCES VISTORIADOR(id)
+);
+DROP TABLE IF EXISTS PERMISSAO;
+CREATE TABLE IF NOT EXISTS PERMISSAO (
+  codigo_acesso int(5) NOT NULL AUTO_INCREMENT,
+  modulo VARCHAR(255) NOT NULL,
+  PRIMARY KEY (codigo_acesso)
+);
+DROP TABLE IF EXISTS NOTICIA;
+CREATE TABLE IF NOT EXISTS NOTICIA (
+  id int(5) NOT NULL AUTO_INCREMENT,
+  url VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT UQ_url UNIQUE(url)
+);
+DROP TABLE IF EXISTS ALERTA;
+CREATE TABLE IF NOT EXISTS ALERTA (
+  id int(5) NOT NULL AUTO_INCREMENT,
+  descricao varchar(255) NOT NULL,
+  texto VARCHAR(255) NOT NULL,
+  dataHora varchar(255) NOT NULL,
   PRIMARY KEY (id)
 );

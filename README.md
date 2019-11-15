@@ -1,1 +1,19 @@
-# banco-de-dados
+Tarefas pendentes:
+- Texto universo de discurso
+- Modelo DER
+- Criar 2 views
+- Criar 2 índices
+- Revisar tipos e tamanhos das colunas
+-  Consultas SQL que mostre: 
+--a. Tabelas do schema 
+--b. Colunas, com respectivos tipos e tamanhos, das tabelas do schema 
+--c. Constraints das tabelas do schema 
+--d. Índices do schema 
+-  Manipulação de dados:  
+--   duas inserções de linhas 
+--   duas remoções de linhas 
+--   duas modificações de linhas 
+-  Consultas:  
+--   Duas consultas que tenha consulta aninhada 
+--   Duas consultas que utilize função de agregação, utilizando GROUP BY e HAVING 
+--   Duas consultas que faça join de pelo menos três tabelas
