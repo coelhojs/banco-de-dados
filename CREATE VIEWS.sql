@@ -14,3 +14,11 @@ CREATE VIEW Avisos_Pendentes AS
 SELECT idSequencia, status, tipo, risco, bairro, logradouro
 FROM aviso
 WHERE status = 'Pendente';
+
+
+-- View com os usuários de Contagem e com apenas campos selecionados
+DROP VIEW IF EXISTS usuarios_contagem;
+CREATE VIEW
+usuarios_contagem 
+AS 
+SELECT nome, cpf, telefone, email FROM usuario WHERE Lower(cidade) = 'contagem' 
