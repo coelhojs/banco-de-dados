@@ -14,3 +14,22 @@ VALUES ('0001/2019', 'Inundação', 'Inundação devido a chuva', 1, 'Rua Scania
 -- Inserção Aviso Teste 2
 INSERT INTO aviso (idSequencia, tipo, descricao, usuario_id, logradouro, bairro)
 VALUES ('0002/2019', 'Risco construtivo', 'Estrutura de prédio com rachaduras', 2, 'Rua das Flores', 'Centro');
+
+
+-- Remoção Usuario Teste 1
+DELETE FROM USUARIO WHERE nome='Caique Ribeiro';
+
+-- Remoção Usuario Teste 2
+DELETE FROM USUARIO WHERE nome='Samuel Silva';
+
+-- Remoção Aviso Teste 1
+DELETE FROM AVISO WHERE idSequencia='0001/2019';
+
+-- Remoção Aviso Teste 2
+DELETE FROM AVISO WHERE idSequencia='0002/2019';
+
+-- Alteração Usuario Teste 1
+UPDATE USUARIO SET telefone = '31986847125' WHERE id = 1;
+
+-- Alteração Aviso Teste 1
+UPDATE AVISO SET descricao = 'Situação de risco eminente aos moradores' WHERE id = 1;
